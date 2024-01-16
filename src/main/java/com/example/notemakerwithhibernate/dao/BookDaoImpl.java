@@ -1,70 +1,56 @@
 package com.example.notemakerwithhibernate.dao;
 
 import com.example.notemakerwithhibernate.entity.Book;
+import com.example.notemakerwithhibernate.utility.SessionFactoryHelper;
 import com.example.notemakerwithhibernate.utility.SessionHelper;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
+
 
 @Component
 public class BookDaoImpl {
 
+    @Transactional
     public void saveBook(Book dbBook) {
 
-        SessionFactory sessionFactory = SessionHelper.getSessionFactory();
-        Session session = sessionFactory.openSession();
-
-        Transaction tx = session.beginTransaction();
+        Session session = SessionHelper.getSession();
 
         session.save(dbBook);
 
-        tx.commit();
 
-        session.close();
-        sessionFactory.close();
+//        session.close();
     }
 
     public Book getBook(int bookId) {
-        SessionFactory sessionFactory = SessionHelper.getSessionFactory();
-        Session session = sessionFactory.openSession();
+        Session session = SessionHelper.getSession();
 
         Book dbBook = (Book) session.get(Book.class,bookId);
 
-        session.close();
-        sessionFactory.close();
+//        session.close();
 
         return dbBook;
     }
 
+    @Transactional
     public void saveUpdatedBook(Book dbBook) {
-        SessionFactory sessionFactory = SessionHelper.getSessionFactory();
-        Session session = sessionFactory.openSession();
+        Session session = SessionHelper.getSession();
 
-        Transaction tx = session.beginTransaction();
+        session.update(dbBook);
 
-        session.merge(dbBook);
-
-        tx.commit();
-
-        session.close();
-        sessionFactory.close();
+//        session.close();
     }
 
+    @Transactional
     public void deleteBook(int bookId) {
-        SessionFactory sessionFactory = SessionHelper.getSessionFactory();
-        Session session = sessionFactory.openSession();
-
-        Transaction tx = session.beginTransaction();
-
+        Session session = SessionHelper.getSession();
 
         Book dbBook = (Book) session.get(Book.class,bookId);
         session.delete(dbBook);
 
-        tx.commit();
-
-        session.close();
-        sessionFactory.close();
+//        session.close();
     }
 }
