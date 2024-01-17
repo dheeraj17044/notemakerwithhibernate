@@ -36,7 +36,6 @@ public class BookDaoImpl {
         return dbBook;
     }
 
-//    @Transactional
     public void saveUpdatedBook(Book dbBook) {
         Session session = SessionHelper.getSession();
 
@@ -47,7 +46,6 @@ public class BookDaoImpl {
         session.close();
     }
 
-//    @Transactional
     public void deleteBook(int bookId) {
         Session session = SessionHelper.getSession();
 
