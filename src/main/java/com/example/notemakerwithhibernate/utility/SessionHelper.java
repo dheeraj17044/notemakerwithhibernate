@@ -9,7 +9,7 @@ public class SessionHelper {
     private static Session session;
 
     public static Session getSession() {
-        if(session==null){
+        if(session==null || !session.isOpen()){
             SessionFactory sessionFactory = SessionFactoryHelper.getSessionFactory();
             session = sessionFactory.openSession();
         }

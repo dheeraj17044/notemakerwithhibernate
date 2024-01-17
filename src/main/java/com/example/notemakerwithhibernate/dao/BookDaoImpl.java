@@ -7,22 +7,23 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 
 
-@Component
+@Repository
 public class BookDaoImpl {
 
-    @Transactional
     public void saveBook(Book dbBook) {
 
         Session session = SessionHelper.getSession();
+        Transaction tx = session.beginTransaction();
 
         session.save(dbBook);
 
-
-//        session.close();
+        tx.commit();
+        session.close();
     }
 
     public Book getBook(int bookId) {
@@ -30,27 +31,31 @@ public class BookDaoImpl {
 
         Book dbBook = (Book) session.get(Book.class,bookId);
 
-//        session.close();
+        session.close();
 
         return dbBook;
     }
 
-    @Transactional
+//    @Transactional
     public void saveUpdatedBook(Book dbBook) {
         Session session = SessionHelper.getSession();
 
-        session.update(dbBook);
+        Transaction tx = session.beginTransaction();
 
-//        session.close();
+        session.update(dbBook);
+        tx.commit();
+        session.close();
     }
 
-    @Transactional
+//    @Transactional
     public void deleteBook(int bookId) {
         Session session = SessionHelper.getSession();
 
+        Transaction tx = session.beginTransaction();
+
         Book dbBook = (Book) session.get(Book.class,bookId);
         session.delete(dbBook);
-
-//        session.close();
+        tx.commit();
+        session.close();
     }
 }
